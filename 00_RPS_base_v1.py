@@ -47,7 +47,7 @@ rounds_played = 0
 yes_no_instructions = "Have you played before? "
 yes_no_error = "Please say 'Yes' or 'No'" 
 choose_instruction = "What move do you want to make (Rock, Paper, Scissors)? "
-choose_error = "Please choose Rock (R), Paper (P) or Scissors (S)"
+choose_error = "Please choose Rock, Paper or Scissors"
 instructions = "These will be instructions"
 
 # Lists of valid responses
@@ -80,6 +80,8 @@ while end_game == "no":
         heading = f"Round {rounds_played + 1} of {rounds}"
         
     print(heading)
+
+    # Ask user to choose a move to make (Rock, Paper, Scissors)
     choose = choice_checker(choose_instruction, choose_error, rps_list)
 
     # End game if exit code is typed
