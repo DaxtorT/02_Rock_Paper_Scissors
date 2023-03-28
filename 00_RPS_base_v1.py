@@ -2,8 +2,7 @@ import random
 
 # Functions go here
 def choice_checker(question, error, valid_list):
-    valid = False
-    while not valid:
+    while True:
         # Ask user for choice (and force lowercase)
         response = input(question).lower()
 
@@ -41,6 +40,7 @@ def check_rounds():
 
 
 
+
 # Main Routine goes here
 # Constants for program
 rounds_played = 0
@@ -50,9 +50,23 @@ choose_instruction = "What move do you want to make (Rock, Paper, Scissors)? "
 choose_error = "Please choose Rock, Paper or Scissors"
 instructions = "These will be instructions"
 
-# Lists of valid responses
+# Lists or Dicts of valid responses
 yes_no_list = ["yes", "no"]
 rps_list = ["rock", "paper", "scissors", "xxx"]
+
+results_dict = {
+('rock', 'paper'): "You Lose",
+('rock', 'scissors'): "You WIN",
+('paper', 'rock'): "You WIN",
+('paper', 'scissors'): "You Lose",
+('scissors', 'rock'): "You Lose",
+('scissors', 'paper'): "You WIN",}
+
+comparison_dict = {
+    'r': ('rock'),
+    'p': ('paper'),
+    's': ('scissors')
+}
 
 # Ask user if they have played before
 # If 'yes', show instructions
@@ -88,11 +102,20 @@ while end_game == "no":
     if choose == "xxx":
         break
 
-    if choose == "":
-        choose = "nothing"
+    elif choose == "":
+        choose = "Nothing"
+
+    # Converts single letter response into word for comparison(if required)
+    if len(choose) == 1:
+        input_letter = choose
+        if input_letter in comparison_dict:
+            output_word = comparison_dict[input_letter]
+
+    elif len(choose) > 1:
+        output_word = choose
 
     # Rest of loop / game
-    print(f"You chose {choose}")
+    print(f"Your Choice: {output_word}")
 
     rounds_played += 1
     
@@ -100,12 +123,20 @@ while end_game == "no":
     if rounds_played == rounds:
             end_game = "yes"
 
+    # Generate random move for computer
+    comp_choice = random.choice(rps_list [:-1])
+    print(f"Computer Choice: {comp_choice}")
 
-# Generate random move for computer
+    # Compare user's move with computer's move
+    # Get the result from the dictionary based on the user and computer choices
+    if output_word == comp_choice:
+        result = ("It's a Tie")
 
+    else:
+        result = results_dict[(output_word, comp_choice)]
 
-# Compare user's move with computer's move
-
+    # Prints result of the current round
+    print(f"Result: {result}")
 
 # Ask user if the want to see their game history
 # If 'yes', show game history
