@@ -38,12 +38,13 @@ def check_rounds():
 
         return response
 
-
-
-
 # Main Routine goes here
 # Constants for program
+round_no = 1
 rounds_played = 0
+rounds_lost = 0
+rounds_drawn = 0
+
 yes_no_instructions = "Have you played before? "
 yes_no_error = "Please say 'Yes' or 'No'" 
 choose_instruction = "What move do you want to make (Rock, Paper, Scissors)? "
@@ -53,20 +54,20 @@ instructions = "These will be instructions"
 # Lists or Dicts of valid responses
 yes_no_list = ["yes", "no"]
 rps_list = ["rock", "paper", "scissors", "xxx"]
+game_summary = []
 
 results_dict = {
-('rock', 'paper'): "You Lose",
-('rock', 'scissors'): "You WIN",
-('paper', 'rock'): "You WIN",
-('paper', 'scissors'): "You Lose",
-('scissors', 'rock'): "You Lose",
-('scissors', 'paper'): "You WIN",}
+('rock', 'paper'): "lost",
+('rock', 'scissors'): "won",
+('paper', 'rock'): "won",
+('paper', 'scissors'): "lost",
+('scissors', 'rock'): "lost",
+('scissors', 'paper'): "won"}
 
 comparison_dict = {
-    'r': ('rock'),
-    'p': ('paper'),
-    's': ('scissors')
-}
+'r': ('rock'),
+'p': ('paper'),
+'s': ('scissors')}
 
 # Ask user if they have played before
 # If 'yes', show instructions
@@ -130,17 +131,62 @@ while end_game == "no":
     # Compare user's move with computer's move
     # Get the result from the dictionary based on the user and computer choices
     if output_word == comp_choice:
-        result = ("It's a Tie")
+        result = ("tie")
 
     else:
-        result = results_dict[(output_word, comp_choice)]
+        result = results_dict[(output_word, comp_choice,)]
+
+    # Adding result to list
+    game_summary.append(result)
+
+    # Calculates total won, lost and drawn rounds
+    if result == "tie":
+        result = "It's a Tie"
+        rounds_drawn += 1
+
+    elif result == "lost":
+        result = "You Lose"
+        rounds_lost += 1
+
+    else:
+        result = "You WIN"
 
     # Prints result of the current round
     print(f"Result: {result}")
 
+# Quick winning rounds calculation
+rounds_won = rounds_played - rounds_lost - rounds_drawn
+
+# Shows user total round stats
+print()
+print("Rounds Summary")
+print(f"Won: {rounds_won}, Drawn: {rounds_drawn}, Lost: {rounds_lost}")
+
+# Calculate all game history
+percent_won = rounds_won / rounds_played * 100
+percent_lost = rounds_lost / rounds_played * 100
+percent_tie = rounds_drawn / rounds_played * 100
+
 # Ask user if the want to see their game history
 # If 'yes', show game history
+print()
+show_history = choice_checker("Do you want to see your game history? ", "Please answer 'Yes' or 'No'", yes_no_list)
 
+if show_history == "yes" or show_history == "y":
+    print()
+    print("Game History")
+    for game in game_summary:
+        print(f"R{round_no}: {game}")
+        round_no += 1
+
+    print()
+    print("Game Statistics")
+    print(f"Win: {rounds_won}, ({percent_won:.0f}%)",
+        f"\nLoss: {rounds_lost}, ({percent_lost:.0f}%)",
+        f"\nTie: {rounds_drawn}, ({percent_tie:.0f}%)")
+
+else:
+    print("No Problem :)")
 
 # Final end game content
 print()
